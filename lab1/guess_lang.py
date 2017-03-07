@@ -9,23 +9,8 @@ from corpus_definitions import languages_set
 from lang_ngrams import determine_ngrams
 from metrics import euclidean_metric, max_metric, cosine_metric, taxi_metric, normalize
 
-if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('input_file', help='file with the text in language to be guessed')
-    parser.add_argument('metric', help='metric used to compare languages',
-                        choices=['euclidean', 'cosine', 'max', 'taxi'])
-    parser.add_argument('n', help='n-gram length', type=int)
-    parser.add_argument('--encoding', help='charset of input file')
-    args = parser.parse_args()
-
-    input_file = args.input_file
-    metric = args.metric
-    n = args.n
-    encoding = 'utf-8'
-    if args.encoding:
-        encoding = args.encoding
-
+def guess(input_file, metric, n, encoding='utf-8'):
     languages = languages_set()
 
     metrics = {
@@ -66,3 +51,23 @@ if __name__ == "__main__":
     print "The best fitting language: {}".format(best_language)
     print "Distances to other languages: "
     pprint(distances)
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input_file', help='file with the text in language to be guessed')
+    parser.add_argument('metric', help='metric used to compare languages',
+                        choices=['euclidean', 'cosine', 'max', 'taxi'])
+    parser.add_argument('n', help='n-gram length', type=int)
+    parser.add_argument('--encoding', help='charset of input file')
+    args = parser.parse_args()
+
+    input_file = args.input_file
+    metric = args.metric
+    n = args.n
+    encoding = 'utf-8'
+    if args.encoding:
+        encoding = args.encoding
+
+    guess(input_file, metric, n, encoding)
