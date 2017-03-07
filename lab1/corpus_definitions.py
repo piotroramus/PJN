@@ -4,14 +4,6 @@ _input_dir = 'corpuses'
 
 _corpuses = [
     {
-        'filename': 'english_ex.txt',
-        'lang': 'en',
-    },
-    {
-        'filename': 'finnish_short.txt',
-        'lang': 'fl',
-    },
-    {
         'filename': 'english1.txt',
         'lang': 'en',
     },
