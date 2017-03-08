@@ -61,15 +61,11 @@ def save_results(filename, dictionary):
             fn.write("{} {}\n".format(key, dictionary[key]))
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print "Program usage: %s n".format(sys.argv[0])
-        sys.exit(1)
+def lang_ngrams(n):
 
-    n = int(sys.argv[1])
-
-    corpus_results_dir = os.path.join("results", "corpus")
-    lang_results_dir = os.path.join("results", "lang")
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    corpus_results_dir = os.path.join(script_dir, "results", "corpus")
+    lang_results_dir = os.path.join(script_dir, "results", "lang")
 
     generate_statistics(n, corpus_results_dir)
 
@@ -77,3 +73,12 @@ if __name__ == '__main__':
     for lang in available_languages:
         print "Gathering statistics for {} language...".format(lang)
         build_lang_statistics(n, lang, corpus_results_dir, lang_results_dir)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print "Program usage: %s n".format(sys.argv[0])
+        sys.exit(1)
+
+    n = int(sys.argv[1])
+    lang_ngrams(n)

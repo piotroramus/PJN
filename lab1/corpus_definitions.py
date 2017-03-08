@@ -1,6 +1,7 @@
 import os
 
-_input_dir = 'corpuses'
+_script_dir = os.path.dirname(os.path.realpath(__file__))
+_input_dir = os.path.join(_script_dir, 'corpuses')
 
 _corpuses = [
     {
