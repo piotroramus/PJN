@@ -1,0 +1,47 @@
+I segnali vengono classificati in varie categorie, a seconda delle loro proprietà.
+
+In riferimento al tempo si definisce:
+
+segnale a tempo continuo: l'asse dei tempi può assumere un qualsiasi valore reale,
+segnale a tempo discreto: l'asse dei tempi assume solo valori discreti, ad esempio 1, 2, 3...
+In riferimento alla variabile dipendente si distinguono:
+
+segnale ad ampiezza continua: i valori assunti dall'ampiezza del segnale sono numeri reali appartenenti ad un intervallo, cioè possono assumere uno qualsiasi degli infiniti valori compresi tra un minimo ed un massimo;
+segnale ad ampiezza quantizzata: i valori assunti dall'ampiezza del segnale sono numeri naturali [con segno], cioè appartengono ad un insieme finito di valori precisi.
+segnale bipolare o bidirezionale: assume nel tempo sia valori di tensione negativi che valori positivi.
+segnale unipolare o monodirezionale: assume nel tempo solo valori di tensione negativi o positivi.
+Da queste distinzioni si definiscono:
+
+segnale analogico: segnale a tempo continuo e ad ampiezza continua
+segnale digitale o numerico: segnale a tempo discreto e ad ampiezza quantizzata.
+Inoltre, in base alla possibilità di prevedere l'ampiezza futura, i segnali si distinguono in:
+
+segnale deterministico: segnale di cui si conosce esattamente l'andamento dell'ampiezza in funzione del tempo;
+Segnale stocastico o aleatorio: l'andamento dell'ampiezza è caratterizzabile solo in termini statistici;
+Un segnale può anche essere periodico o non periodico, si dice periodico quando una parte di questo si ripete nel tempo ugualmente. La parte che si ripete viene detta periodo.
+
+Nelle telecomunicazioni, dal punto di vista del tipo di informazione trasportata fino all'utente si può distinguere essenzialmente tra:
+
+segnale audio;
+segnale video;
+segnale dati.
+ciascuno con caratteristiche diverse in termine di banda di trasmissione richiesta.
+
+Dal punto di vista della tipologia fisica del segnale si ha:
+
+segnale elettrico;
+segnale elettromagnetico;
+segnale acustico.
+In generale un segnale è caratterizzabile da una velocità di propagazione nel mezzo considerato e, nelle telecomunicazioni, dalla quantità di informazione trasportata a mezzo del teorema di Shannon-Hartley.
+
+Nell'Esercito Italiano, il maggior generale dei corpi logistici corrisponde al generale di divisione, e in alcuni periodi, sia passati (fine Ottocento) sia recenti, ha sostituito formalmente quest'altro titolo.
+
+Il distintivo di grado è uguale a quello di generale di divisione ed è costituito da due stellette e da una greca. La presenza di una stelletta bordata d'oro indica invece le promozioni a titolo onorifico.
+
+Nel 1997 i gradi degli Ufficiali Generali erano stati ridenominati da Generale di brigata, Generale di divisione e Corpo d'Armata, in Brigadier Generale, Maggior Generale e Tenente Generale e venne inoltre istituito, per il solo Capo di Stato Maggiore della Difesa, il grado a quattro stelle di Generale.
+
+Dal 16 dicembre 2004 per effetto della legge 2 dicembre 2004, n.299 le denominazioni per gli Ufficiali Generali provenienti dalle "Armi" sono tornate le classiche "Generale di Brigata, Generale di Divisione e Generale di Corpo d'Armata" mentre le denominazioni di Brigadier Generale, Maggior Generale e Tenente Generale sono rimaste in vigore per gli Ufficiali Generali provenienti dai Corpi Tecnici e Logistici.
+
+In seguito ad una della norme del decreto 11 novembre 1938 al vertice del Corpo della Capitanerie di porto veniva posto un ammiraglio di squadra appartenente al Corpo di stato maggiore della Regia Marina, tale situazione perdurò fino al gennaio 1946 quando al vertice del corpo tornò un tenente generale di porto proveniente dal Corpo delle Capitanerie. Dopo la riforma delle denominazioni dei gradi della Marina Militare introdotta con la legge 16 aprile 1973, n° 174[1], con cui gli ufficiali corpi tecnici e del Corpo delle Capitanerie portano gli stessi gradi degli altri ufficiali del Corpo di stato maggiore della Marina Militare, con l'aggiunta dei suffissi "(AN)", "(GN)", "(MD)", "(CM)", "(CP)"[1] rimangono diverse le denominazioni dei gradi di ammiraglio ispettore (equivalente ad ammiraglio di divisione), ed ammiraglio ispettore capo (equivalente ad ammiraglio di squadra), mentre precedentemente alla riforma del 1973 i gradi degli ufficiali tecnici e del Corpo delle Capitanerie avevano le stesse denominazioni in uso nell'Esercito italiano, quindi l'ammiraglio ispettore (CP) si chiamava maggior generale di porto e l'ammiraglio ispettore capo tenente generale di porto.
+
+Con il Decreto del Presidente della Repubblica del 12 febbraio 2013, n. 29 e con il decreto legislativo 28 gennaio 2014, n. 8,[2], per la "riduzione delle dotazioni organiche" essendo stato abolito il grado di ammiraglio ispettore capo per i Corpi sanitario militare marittimo (SAN), di commissariato (CM) e delle capitanerie di porto (CP), la funzioni di comandanti dei suddetti Corpi della Marina Militare e quindi del Corpo delle capitanerie di porto - Guardia costiera vengono ora svolte nel grado di ammiraglio ispettore.
