@@ -4,3 +4,5 @@ test_results/
 
 *.pyc
 /lab1/lab1.pdf
+
+*ods
