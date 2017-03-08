@@ -32,7 +32,7 @@ samples_num = len(test_samples)
 metrics = ["cosine", "taxi", "euclidean", "max"]
 languages = languages_set()
 
-n_range = range(2, 6)
+n_range = range(2, 10)
 
 generate_lang_ngrams = False
 if generate_lang_ngrams:
@@ -46,7 +46,7 @@ if process_by_metric:
         print "Processing metric {}".format(metric)
 
         with open(os.path.join("test_results", "test_{}.txt".format(metric)), 'w') as fn:
-            fn.write("n,\%\n")
+            fn.write("n,success_rate\n")
             for n in n_range:
 
                 success = 0
@@ -58,14 +58,14 @@ if process_by_metric:
                         success += 1
 
                 accuracy = (success / float(samples_num))
-                print "All percent: {}".format(accuracy)
+                print "Success rate: {}".format(accuracy)
                 fn.write("{},{}\n".format(n, accuracy))
 
 process_by_lang = True
 if process_by_lang:
     for metric in metrics:
 
-        with open(os.path.join("test_results", "test_{}_bylang.txt".format(metric)), 'w') as fn:
+        with open(os.path.join("test_results", "test_{}_bylang_n_{}.txt".format(metric, n_range[0])), 'w') as fn:
             fn.write("lang,precision,recall,f1,accuracy\n")
 
             for lang in languages:
@@ -83,11 +83,13 @@ if process_by_lang:
                         guessed_language = guess(input_file, metric, n)
 
                         if test_samples[sample] == lang:
+                            # conerning tested language
                             if guessed_language == test_samples[sample]:
                                 true_positives += 1
                             else:
                                 false_negatives += 1
                         else:
+                            # not concerning tested language
                             if guessed_language == test_samples[sample]:
                                 true_negatives += 1
                             else:

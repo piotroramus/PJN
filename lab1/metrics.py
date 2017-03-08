@@ -13,32 +13,32 @@ def normalize(vec):
 
 def euclidean_metric(v1, v2):
     keys = set(v1.keys()) | set(v2.keys())
-    sum = 0
+    s = 0
     for key in keys:
-        sum += (v1.get(key, 0) - v2.get(key, 0)) ** 2
-    return sqrt(sum)
+        s += (v1.get(key, 0) - v2.get(key, 0)) ** 2
+    return sqrt(s)
 
 
 def taxi_metric(v1, v2):
     keys = set(v1.keys()) | set(v2.keys())
-    sum = 0
+    s = 0
     for key in keys:
-        sum += abs(v1.get(key, 0) - v2.get(key, 0))
-    return sum
+        s += abs(v1.get(key, 0) - v2.get(key, 0))
+    return s
 
 
 def max_metric(v1, v2):
     keys = set(v1.keys()) | set(v2.keys())
-    sum = 0
+    s = 0
     for key in keys:
-        sum = max(sum, abs(v1.get(key, 0) - v2.get(key, 0)))
-    return sum
+        s = max(s, abs(v1.get(key, 0) - v2.get(key, 0)))
+    return s
 
 
 def cosine_metric(v1, v2):
     keys = set(v1.keys()) | set(v2.keys())
-    sum = 0
+    s = 0
     for key in keys:
-        sum += v1.get(key, 0) * v2.get(key, 0)
+        s += v1.get(key, 0) * v2.get(key, 0)
     # omitting float(vlen(v1)*vlen(v2)) since it is equal to 1
-    return 1 - sum
+    return 1 - s
