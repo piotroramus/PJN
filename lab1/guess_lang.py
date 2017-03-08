@@ -50,7 +50,7 @@ def guess(input_file, metric, n, encoding='utf-8'):
 
     print "The best fitting language: {}".format(best_language)
     print "Distances to other languages: "
-    pprint(distances)
+    # pprint(distances)
 
     return best_language
 
