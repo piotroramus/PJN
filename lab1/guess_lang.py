@@ -52,6 +52,8 @@ def guess(input_file, metric, n, encoding='utf-8'):
     print "Distances to other languages: "
     pprint(distances)
 
+    return best_language
+
 
 if __name__ == "__main__":
 

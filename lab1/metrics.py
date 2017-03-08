@@ -1,14 +1,14 @@
 from math import fsum, sqrt
 
 
-def normalize(vec):
-    s = fsum(vec.values())
-    normalized_v0 = {k: v / s for k, v in vec.items()}
-    return normalized_v0
-
-
 def vlen(v):
     return sqrt(fsum(v ** 2 for v in v.values()))
+
+
+def normalize(vec):
+    l = vlen(vec)
+    normalized_v0 = {k: v / l for k, v in vec.items()}
+    return normalized_v0
 
 
 def euclidean_metric(v1, v2):
@@ -40,4 +40,5 @@ def cosine_metric(v1, v2):
     sum = 0
     for key in keys:
         sum += v1.get(key, 0) * v2.get(key, 0)
-    return 1 - (sum/float(vlen(v1)*vlen(v2)))
+    # omitting float(vlen(v1)*vlen(v2)) since it is equal to 1
+    return 1 - sum
