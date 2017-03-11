@@ -3,6 +3,6 @@ results/
 test_results/
 
 *.pyc
-/lab1/lab1.pdf
+*.pdf
 
 *ods
