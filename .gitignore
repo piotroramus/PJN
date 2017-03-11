@@ -6,3 +6,4 @@ test_results/
 *.pdf
 
 *ods
+/lab2/resources/
