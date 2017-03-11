@@ -51,3 +51,30 @@ def longest_common_substring_length(s1, s2):
                 c[j + 1][i + 1] = 0
 
     return longest
+
+
+def levenshtein_metric(s1, s2):
+    """ Normalized distance between strings s1 and s2 where
+        0 == perfect match
+        1 == completely different strings
+        based on the Levenshtein distance between s1 and s2
+    """
+    return levenshtein_distance(s1, s2) / float(max(len(s1), len(s2)))
+
+
+def longest_common_subsequence_metric(s1, s2):
+    """ Normalized distance between strings s1 and s2 where
+        0 == perfect match
+        1 == completely different strings
+        based on the length of the longest common subsequence of s1 and s2
+    """
+    return 1 - longest_common_subsequence_length(s1, s2) / float(max(len(s1), len(s2)))
+
+
+def longest_common_substring_metric(s1, s2):
+    """ Normalized distance between strings s1 and s2 where
+        0 == perfect match
+        1 == completely different strings
+        based on the length of the longest common substring of s1 and s2
+    """
+    return 1 - longest_common_substring_length(s1, s2) / float(max(len(s1), len(s2)))
