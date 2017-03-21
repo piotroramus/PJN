@@ -2,7 +2,6 @@ import argparse
 import codecs
 import re
 
-from pprint import pprint
 from unidecode import unidecode
 
 from metrics import levenshtein_metric, longest_common_subsequence_metric, longest_common_substring_metric
@@ -62,7 +61,7 @@ def preprocess(input_file, output_file):
                 outf.write("{}\n".format(line))
 
 
-def clusterize(metric=None, similarity_threshold=None, input_file=None, output_file=None, preprocess=None,
+def clusterize(metric=None, similarity_threshold=None, input_file=None, output_file=None, perform_preprocessing=None,
                preprocessing_results=None):
     if not metric:
         metric = 'longest_common_subsequence'
@@ -71,7 +70,7 @@ def clusterize(metric=None, similarity_threshold=None, input_file=None, output_f
     if not input_file:
         input_file = "resources/lines.txt"
     if not output_file:
-        output_file = 'out.txt'
+        output_file = 'out_{}_{}.txt'.format(metric, str(similarity_threshold).replace('.', '_'))
     if not preprocessing_results:
         preprocessing_results = 'preprocessed.txt'
 
@@ -82,7 +81,7 @@ def clusterize(metric=None, similarity_threshold=None, input_file=None, output_f
     }
     metric = metrics[metric]
 
-    if preprocess:
+    if perform_preprocessing:
         preprocess(input_file, preprocessing_results)
 
     clusters = dict()
@@ -95,21 +94,15 @@ def clusterize(metric=None, similarity_threshold=None, input_file=None, output_f
             print "Processing line {}...\n".format(line_num)
             match = False
             for cluster_num in clusters:
-                for entry in clusters[cluster_num]:
-                    if metric(entry, line) < similarity_threshold:
-                        match = True
-                        clusters[cluster_num].append(line)
-                        break
-
-                # to avoid subscribing for multiple clusters
-                if match:
+                if metric(clusters[cluster_num][0], line) < similarity_threshold:
+                    match = True
+                    clusters[cluster_num].append(line)
                     break
 
             if not match:
                 cluster_num += 1
                 clusters[cluster_num] = [line]
 
-    # TODO: this probably will not be needed? not sure... maybe it would be better to divide clusterize and quality check...
     with open(output_file, 'w') as rf:
         for cluster in clusters:
             rf.write("##########\n")
@@ -129,7 +122,7 @@ if __name__ == '__main__':
                         help='path to file with strings to clusterize')
     parser.add_argument('--output_file',
                         help='path to file where the results will be stored')
-    parser.add_argument('--preprocess',
+    parser.add_argument('--perform_preprocessing',
                         help='perform preprocessing')
     parser.add_argument('--preprocessing_results',
                         help='path to file where results of preprecessing will be stored (when done on the fly) '
@@ -141,7 +134,7 @@ if __name__ == '__main__':
     similarity_threshold = args.similarity_threshold
     input_file = args.input_file
     output_file = args.output_file
-    preprocess = args.preprocess
+    perform_preprocessing = args.perform_preprocessing
     preprocessing_results = args.preprocessing_results
 
-    clusterize(metric, similarity_threshold, input_file, output_file, preprocess, preprocessing_results)
+    clusterize(metric, similarity_threshold, input_file, output_file, perform_preprocessing, preprocessing_results)
