@@ -6,9 +6,12 @@ test_results/
 *.pdf
 
 *ods
+
+
 /lab2/resources/
 /lab2/*.txt
-!/lab2/requirements.txt
 
 /lab3/*.txt
 /lab3/resources/
+
+!lab*/requirements.txt

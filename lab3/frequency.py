@@ -2,10 +2,49 @@
 
 import codecs
 import string
+import matplotlib.pyplot as plt
+
 import re
+
 from collections import Counter
 
 from plp import PLP
+
+
+def draw_zipf_plots(input_file, encoding='utf-8', items_num=50):
+    """ This function assumes that the entries in file are already sorted in descending order"""
+    words = []
+    counts = []
+    with codecs.open(input_file, 'r', encoding) as f:
+        for line in f:
+            word, count = line.split(',')
+            words.append(word)
+            counts.append(int(count))
+
+    x = range(items_num)
+    plt.figure(figsize=(items_num / 6, 6))
+
+    output = "zipf1.png"
+    plt.title("Zipf law for the Potop book")
+    plt.plot(x, counts[:items_num])
+    plt.xticks(x, words[:items_num], rotation=90)
+    plt.tight_layout()
+    plt.savefig(output)
+    plt.gcf().clear()
+
+    cumulative_y = []
+    all_sum = float(sum(counts))
+    current_sum = 0
+    for i in xrange(items_num):
+        current_sum += counts[i]
+        cumulative_y.append((current_sum / all_sum) * 100)
+
+    output = "zipf2.png"
+    plt.title("Cumulative Zipf law for the Potop book")
+    plt.plot(x, cumulative_y)
+    plt.xticks(x, words[:items_num], rotation=90)
+    plt.tight_layout()
+    plt.savefig(output)
 
 
 def generate_freq_stats(input_file, output_file, encoding='utf-8'):
@@ -40,3 +79,4 @@ if __name__ == "__main__":
     output_file = "stats.txt"
 
     generate_freq_stats(input_file, output_file)
+    draw_zipf_plots(input_file=output_file)
