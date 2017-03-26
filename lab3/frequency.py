@@ -11,6 +11,8 @@ from scipy.optimize import curve_fit
 
 from plp import PLP
 
+remove_punctuation_pattern = re.compile('[%s]' % re.escape(string.punctuation))
+
 
 def mandelbrot_fit(x, B, d, P):
     return 1.0 * P / ((x + d) ** B)
@@ -96,7 +98,6 @@ def draw_raw_plots(input_file, encoding='utf-8', items_num=50, **kwargs):
 def generate_freq_stats(input_file, output_file, encoding='utf-8', **kwargs):
     plp = PLP()
     words = Counter()
-    remove_punctuation_pattern = re.compile('[%s]' % re.escape(string.punctuation))
 
     with codecs.open("out.txt", 'w', encoding) as out:
         with codecs.open(input_file, 'r', encoding) as f:
@@ -139,17 +140,46 @@ def quantitive_count(input_file, encoding='utf-8', **kwargs):
     print "Number of words which make 50% of the text: {}".format(words_making_half_text)
 
 
+def word_ngrams(n, words):
+    """ Counts word-level ngrams"""
+    ngrams = Counter()
+
+    l = len(words)
+    for i in xrange(l - n):
+        ngram = " ".join(words[i:i + n])
+        ngrams[ngram] += 1
+
+    return ngrams
+
+
+def determine_ngrams(input_file, encoding='utf-8', **kwargs):
+    """ Find word-based di-grams and tri-grams for the text in input file"""
+
+    for n in [2, 3]:
+        with codecs.open(input_file, 'r', encoding) as f:
+            data = f.read().strip().lower()
+
+            # remove digits, interpunction and other strange characters
+            data = remove_punctuation_pattern.sub('', data)
+
+            data = data.split()
+            ngrams = word_ngrams(n, data)
+            with codecs.open("{}-ngrams.txt".format(n), 'w', encoding) as out:
+                for ngram, count in ngrams.most_common(len(ngrams)):
+                    out.write(ngram + ": " + str(count) + "\n")
+
+
 if __name__ == "__main__":
     input_file = "resources/potop.txt"
     output_file = "stats.txt"
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=['generate', 'raw_plots', 'fit_plots', 'hl'],
-                        help='choose action to be taken')
+    parser.add_argument('action', choices=['rank', 'raw_plots', 'fit_plots', 'hl', 'ngrams'],
+                        help='action to be taken')
     parser.add_argument('--input_file',
                         help='path to file with input data')
     parser.add_argument('--output_file',
-                        help='only for the generate action')
+                        help='output file for the rank action')
 
     args = parser.parse_args()
 
@@ -158,10 +188,11 @@ if __name__ == "__main__":
     output_file = args.output_file
 
     actions = {
-        'generate': generate_freq_stats,
+        'rank': generate_freq_stats,
         'raw_plots': draw_raw_plots,
         'fit_plots': draw_fit_plots,
         'hl': quantitive_count,
+        'ngrams': determine_ngrams,
     }
 
     actions[action](input_file=input_file, output_file=output_file)
