@@ -1,9 +1,7 @@
 # PJN
-Natural Language Processing classes
+Solutions for Natural Language Processing classes
 
-Each class (lab) contains its own _requirements.txt_ file.
-
-Remarks:
+Each class (lab) contains its own _requirements.txt_ file:
 
 1. N-grams in natural language processing. Guessing language of the text.
 2. Metrics in strings' space.

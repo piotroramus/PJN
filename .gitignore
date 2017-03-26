@@ -15,4 +15,7 @@ test_results/
 /lab3/*.txt
 /lab3/resources/
 
+/lab4/resources/
+
 !lab*/requirements.txt
+
