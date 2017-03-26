@@ -49,14 +49,14 @@ def modified_levenshtein_distance(word1, word2):
     for i, c1 in enumerate(word1):
         for j, c2 in enumerate(word2):
 
-            if c1 == c2 and cost_matrix[j + 1][i + 1] == 1:
+            if c1 == c2 and cost_matrix[j][i] == 1:
                 # the words are equal, so we do not want to add anything
                 cost_matrix[j][i] = 0
-            elif i > 0 and j > 0 and word1[i - 1] == c2 and word2[j - 1] == c1:
-                cost_matrix[j - 1][i - 1] = 1
-                cost_matrix[j][i] = CZECH_ERROR_COST - 1
             elif equal_to_diactiricts(c1, c2):
                 cost_matrix[j][i] = DIACRITICS_COST
+            if i > 1 and j > 1 and word1[i - 1] == c2 and word2[j - 1] == c1:
+                cost_matrix[j - 1][i - 1] = 1
+                cost_matrix[j][i] = CZECH_ERROR_COST - 1
 
             metric_matrix[j + 1][i + 1] = min(metric_matrix[j][i + 1] + 1, metric_matrix[j + 1][i] + 1,
                                               metric_matrix[j][i] + cost_matrix[j][i])
