@@ -20,15 +20,22 @@ def zipf_fit(x, k):
     return 1.0 * k / x
 
 
+def get_stats(input_file, encoding='utf-8'):
+    counts = []
+    words = []
+    with codecs.open(input_file, 'r', encoding) as f:
+        for line in f:
+            word, count = line.split(',')
+            counts.append(int(count))
+            words.append(word)
+
+    return counts, words
+
+
 def draw_fit_plots(input_file, encoding='utf-8', **kwargs):
     """ Fits functions to data and draws plots.
         This function assumes that the entries in file are already sorted in descending order."""
-    data = []
-    with codecs.open(input_file, 'r', encoding) as f:
-        for line in f:
-            _, count = line.split(',')
-            data.append(int(count))
-
+    data, _ = get_stats(input_file)
     x = range(1, len(data) + 1)
 
     # mandelbrot fit
@@ -58,13 +65,7 @@ def draw_fit_plots(input_file, encoding='utf-8', **kwargs):
 def draw_raw_plots(input_file, encoding='utf-8', items_num=50, **kwargs):
     """ Draws plots based on raw data.
         This function assumes that the entries in file are already sorted in descending order."""
-    words = []
-    counts = []
-    with codecs.open(input_file, 'r', encoding) as f:
-        for line in f:
-            word, count = line.split(',')
-            words.append(word)
-            counts.append(int(count))
+    counts, words = get_stats(input_file)
 
     x = range(items_num)
     plt.figure(figsize=(items_num / 6, 6))
@@ -119,17 +120,36 @@ def generate_freq_stats(input_file, output_file, encoding='utf-8', **kwargs):
             f.write(word + "," + str(count) + "\n")
 
 
+def quantitive_count(input_file, encoding='utf-8', **kwargs):
+    """ Counts hapax legomena and words which make 50% of the text"""
+    data, _ = get_stats(input_file)
+
+    hapax_legomena = data.count(1)
+    print "Hapax legomena: {}".format(hapax_legomena)
+
+    half_of_all = 1.0 * sum(data) / 2
+    words_making_half_text = 0
+    current_sum = 0
+    for e in data:
+        current_sum += e
+        words_making_half_text += 1
+        if current_sum >= half_of_all:
+            break
+
+    print "Number of words which make 50% of the text: {}".format(words_making_half_text)
+
+
 if __name__ == "__main__":
     input_file = "resources/potop.txt"
     output_file = "stats.txt"
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=['generate', 'raw_plots', 'fit_plots'],
+    parser.add_argument('action', choices=['generate', 'raw_plots', 'fit_plots', 'hl'],
                         help='choose action to be taken')
     parser.add_argument('--input_file',
                         help='path to file with input data')
     parser.add_argument('--output_file',
-                        help='only for the generate option')
+                        help='only for the generate action')
 
     args = parser.parse_args()
 
@@ -141,7 +161,7 @@ if __name__ == "__main__":
         'generate': generate_freq_stats,
         'raw_plots': draw_raw_plots,
         'fit_plots': draw_fit_plots,
+        'hl': quantitive_count,
     }
 
     actions[action](input_file=input_file, output_file=output_file)
-
