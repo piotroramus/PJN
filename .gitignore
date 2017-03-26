@@ -4,6 +4,7 @@ test_results/
 
 *.pyc
 *.pdf
+*.tar.gz
 
 *ods
 

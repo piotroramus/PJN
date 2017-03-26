@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import argparse
 import codecs
 import matplotlib.pyplot as plt
 import string
@@ -19,7 +20,7 @@ def zipf_fit(x, k):
     return 1.0 * k / x
 
 
-def draw_fit_plots(input_file, encoding='utf-8'):
+def draw_fit_plots(input_file, encoding='utf-8', **kwargs):
     """ Fits functions to data and draws plots.
         This function assumes that the entries in file are already sorted in descending order."""
     data = []
@@ -54,7 +55,7 @@ def draw_fit_plots(input_file, encoding='utf-8'):
     plt.savefig("zipf_mandelbrot.png")
 
 
-def draw_stats_plots(input_file, encoding='utf-8', items_num=50):
+def draw_raw_plots(input_file, encoding='utf-8', items_num=50, **kwargs):
     """ Draws plots based on raw data.
         This function assumes that the entries in file are already sorted in descending order."""
     words = []
@@ -91,7 +92,7 @@ def draw_stats_plots(input_file, encoding='utf-8', items_num=50):
     plt.savefig(output)
 
 
-def generate_freq_stats(input_file, output_file, encoding='utf-8'):
+def generate_freq_stats(input_file, output_file, encoding='utf-8', **kwargs):
     plp = PLP()
     words = Counter()
     remove_punctuation_pattern = re.compile('[%s]' % re.escape(string.punctuation))
@@ -122,6 +123,25 @@ if __name__ == "__main__":
     input_file = "resources/potop.txt"
     output_file = "stats.txt"
 
-    generate_freq_stats(input_file, output_file)
-    draw_stats_plots(input_file=output_file)
-    draw_fit_plots(input_file=output_file)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('action', choices=['generate', 'raw_plots', 'fit_plots'],
+                        help='choose action to be taken')
+    parser.add_argument('--input_file',
+                        help='path to file with input data')
+    parser.add_argument('--output_file',
+                        help='only for the generate option')
+
+    args = parser.parse_args()
+
+    action = args.action
+    input_file = args.input_file
+    output_file = args.output_file
+
+    actions = {
+        'generate': generate_freq_stats,
+        'raw_plots': draw_raw_plots,
+        'fit_plots': draw_fit_plots,
+    }
+
+    actions[action](input_file=input_file, output_file=output_file)
+
