@@ -123,7 +123,7 @@ def generate_freq_stats(input_file, output_file, encoding='utf-8', **kwargs):
 
 def quantitive_count(input_file, encoding='utf-8', **kwargs):
     """ Counts hapax legomena and words which make 50% of the text"""
-    data, _ = get_stats(input_file)
+    data, _ = get_stats(input_file, encoding)
 
     hapax_legomena = data.count(1)
     print "Hapax legomena: {}".format(hapax_legomena)
