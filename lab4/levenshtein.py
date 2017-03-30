@@ -61,12 +61,6 @@ def modified_levenshtein_distance(word1, word2):
             metric_matrix[j + 1][i + 1] = min(metric_matrix[j][i + 1] + 1, metric_matrix[j + 1][i] + 1,
                                               metric_matrix[j][i] + cost_matrix[j][i])
 
-    for e in metric_matrix:
-        print e
-    print
-    for e in cost_matrix:
-        print e
-
     return metric_matrix[m][n]
 
 
@@ -74,10 +68,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('word1', help='first word to compare')
     parser.add_argument('word2', help='second word to compare')
+    parser.add_argument('-p', '--print_result', help='print the result', action='store_true')
     args = parser.parse_args()
 
     word1 = unicode(args.word1, 'utf-8')
     word2 = unicode(args.word2, 'utf-8')
+    print_result = args.print_result
 
     dist = modified_levenshtein_distance(word1, word2)
-    print "Levenshtein distance from " + word1 + " to " + word2 + ": " + str(dist)
+
+    if print_result:
+        print "Levenshtein distance from " + word1 + " to " + word2 + ": " + str(dist)
