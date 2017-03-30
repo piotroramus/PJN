@@ -13,19 +13,31 @@ diacritics = {
     u'z': [u'ż', u'ź'],
 }
 
+others = {
+    u'z': [u's', u'ś'],
+    u'i': [u'j'],
+    u'u': [u'ł', u'ó'],
+    u'k': [u'g'],
+    u'w': [u'f'],
+    u'p': [u'b'],
+    u'd': [u't'],
+    u'o': [u'ą'],
+}
+
+OTHER_ERRORS_COST = 0.25
 DIACRITICS_COST = 0.25
 CZECH_ERROR_COST = 0.5
 
 
-def equal_to_diactiricts(c1, c2):
+def equal_to_special_char(c1, c2, special_characters):
     if c1 == c2:
         return True
-    if c1 in diacritics:
-        for d in diacritics[c1]:
+    if c1 in special_characters:
+        for d in special_characters[c1]:
             if c2 == d:
                 return True
-    if c2 in diacritics:
-        for d in diacritics[c2]:
+    if c2 in special_characters:
+        for d in special_characters[c2]:
             if c1 == d:
                 return True
     return False
@@ -52,8 +64,10 @@ def modified_levenshtein_distance(word1, word2):
             if c1 == c2 and cost_matrix[j][i] == 1:
                 # the words are equal, so we do not want to add anything
                 cost_matrix[j][i] = 0
-            elif equal_to_diactiricts(c1, c2):
+            elif equal_to_special_char(c1, c2, diacritics):
                 cost_matrix[j][i] = DIACRITICS_COST
+            elif equal_to_special_char(c1, c2, others):
+                cost_matrix[j][i] = OTHER_ERRORS_COST
             if i > 1 and j > 1 and word1[i - 1] == c2 and word2[j - 1] == c1:
                 cost_matrix[j - 1][i - 1] = 1
                 cost_matrix[j][i] = CZECH_ERROR_COST - 1
