@@ -98,14 +98,14 @@ def error_probability(word, correction, error_stats):
     return error_stats[distance]
 
 
-def correct_word(word, corpus_stats, error_stats, corrections, most_probable_n=10, max_length_diff=1,
-                 corpus_factor=0.3):
+def correct_word(word, corpus_stats, error_stats, corrections, max_matches=10, max_length_diff=1,
+                 corpus_factor=0.5):
     print "Determining possible word corrections..."
     probable_corrections = Counter()
     for c in corrections:
         if abs(len(word) - len(c)) <= max_length_diff:
             probable_corrections[c] = error_probability(word, c, error_stats) * (corpus_stats[c] ** corpus_factor)
-    return probable_corrections.most_common(most_probable_n)
+    return probable_corrections.most_common(max_matches)
 
 
 def candidates(word, forms):
@@ -139,15 +139,17 @@ if __name__ == '__main__':
                         action='store_true')
     parser.add_argument('--corpus_stats_file', help='path to file with precomputed corpus stats')
     parser.add_argument('--error_stats_file', help='path to file with precomputed error stats')
-    parser.add_argument('--simple', help='use simple edits to determine possible corrections', action='store_true')
-    # -s shortcut
+    parser.add_argument('-s', '--simple', help='use simple edits to determine possible corrections',
+                        action='store_true')
+    parser.add_argument('-n', '--max_matches', help='maximum number of word corrections to display', type=int)
     args = parser.parse_args()
 
     defaults = {
         'perform_preprocessing': False,
         'corpus_stats_file': 'resources/corpus_stats.txt',
         'error_stats_file': 'resources/error_stats.txt',
-        'simple': True,
+        'simple': False,
+        'max_matches': 20,
     }
 
     word_to_correct = unicode(args.word, 'utf-8')
@@ -155,6 +157,7 @@ if __name__ == '__main__':
     corpus_stats_file = args.corpus_stats_file or defaults['corpus_stats_file']
     error_stats_file = args.error_stats_file or defaults['error_stats_file']
     simple_mode = args.simple or defaults['simple']
+    max_matches = args.max_matches or defaults['max_matches']
 
     corpus_files = [
         "resources/dramat.txt",
@@ -180,7 +183,8 @@ if __name__ == '__main__':
         corrections = candidates(word_to_correct, forms)
     else:
         corrections = forms
-    proposed_corrections = correct_word(word_to_correct, corpus_stats, error_stats, corrections)
+    proposed_corrections = correct_word(word_to_correct, corpus_stats, error_stats, corrections,
+                                        max_matches=max_matches)
 
     print "Proposed correction: probability"
     for correction, probability in proposed_corrections:
