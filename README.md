@@ -8,3 +8,5 @@ Each class (lab) contains its own _requirements.txt_ file:
    Clusterizing data with Levensthein, Longest Common Substring and Longest Common Subsequence metrics.
    _Note: no validation of the process_
 3. Zipf and Mandelbrot laws in NLP.
+4. Naive Bayes classifier for guessing word correction
+
