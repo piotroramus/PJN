@@ -108,29 +108,6 @@ def correct_word(word, corpus_stats, error_stats, corrections, max_matches=10, m
     return probable_corrections.most_common(max_matches)
 
 
-def candidates(word, forms):
-    print "Determining edit candidates for the word..."
-    return known([word], forms) or known(edits1(word), forms) or known_edits2(word, forms) or [word]
-
-
-def known(words, forms):
-    return set(w for w in words if w in forms)
-
-
-def edits1(word):
-    alphabet = u'aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż'
-    splits = [(word[:i], word[i:]) for i in range(len(word) + 1)]
-    deletes = [a + b[1:] for a, b in splits if b]
-    transposes = [a + b[1] + b[0] + b[2:] for a, b in splits if len(b) > 1]
-    replaces = [a + c + b[1:] for a, b in splits for c in alphabet if b]
-    inserts = [a + c + b for a, b in splits for c in alphabet]
-    return set(deletes + transposes + replaces + inserts)
-
-
-def known_edits2(word, forms):
-    return set(e2 for e1 in edits1(word) for e2 in edits1(e1) if e2 in forms)
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('word', help='word to correct')
@@ -139,8 +116,6 @@ if __name__ == '__main__':
                         action='store_true')
     parser.add_argument('--corpus_stats_file', help='path to file with precomputed corpus stats')
     parser.add_argument('--error_stats_file', help='path to file with precomputed error stats')
-    parser.add_argument('-s', '--simple', help='use simple edits to determine possible corrections',
-                        action='store_true')
     parser.add_argument('-n', '--max_matches', help='maximum number of word corrections to display', type=int)
     args = parser.parse_args()
 
@@ -156,7 +131,6 @@ if __name__ == '__main__':
     perform_preprocessing = args.perform_preprocessing or defaults['perform_preprocessing']
     corpus_stats_file = args.corpus_stats_file or defaults['corpus_stats_file']
     error_stats_file = args.error_stats_file or defaults['error_stats_file']
-    simple_mode = args.simple or defaults['simple']
     max_matches = args.max_matches or defaults['max_matches']
 
     corpus_files = [
@@ -179,12 +153,7 @@ if __name__ == '__main__':
     else:
         corpus_stats, error_stats = load_corpus_and_error_stats(corpus_stats_file, error_stats_file)
 
-    if simple_mode:
-        corrections = candidates(word_to_correct, forms)
-    else:
-        corrections = forms
-    proposed_corrections = correct_word(word_to_correct, corpus_stats, error_stats, corrections,
-                                        max_matches=max_matches)
+    proposed_corrections = correct_word(word_to_correct, corpus_stats, error_stats, forms, max_matches=max_matches)
 
     print "Proposed correction: probability"
     for correction, probability in proposed_corrections:
