@@ -145,7 +145,7 @@ def word_ngrams(n, words):
     ngrams = Counter()
 
     l = len(words)
-    for i in xrange(l - n):
+    for i in xrange(l - n + 1):
         ngram = " ".join(words[i:i + n])
         ngrams[ngram] += 1
 
