@@ -19,4 +19,6 @@ def levenshtein_distance(s1, s2):
 
 
 def word_error_rate(reference, hypothesis):
-    return levenshtein_distance(reference.split(), hypothesis.split())
+    ref = reference.lower().split()
+    hyp = hypothesis.lower().split()
+    return levenshtein_distance(ref, hyp)
