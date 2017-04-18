@@ -2,6 +2,7 @@ import io
 import re
 import string
 
+from stoplist import load_stoplist, apply_stoplist_to_doc
 from plp import PLP
 
 plp = PLP()
@@ -22,14 +23,18 @@ def cosine_metric(v1, v2):
     return 1 - s
 
 
-def get_processed_documents(filename, output=None, encoding='utf-8'):
+def get_processed_documents(filename, output=None, encoding='utf-8', apply_stoplist=False):
     remove_punctuation_pattern = re.compile('[%s]' % re.escape(string.punctuation))
 
     print "Processing {}".format(filename)
     documents = documents_to_list(filename, encoding)
 
     processed_documents = [doc.strip().lower() for doc in documents]
-    processed_documents = [remove_punctuation_pattern.sub(' ', doc) for doc in processed_documents]
+    processed_documents = [remove_punctuation_pattern.sub(' ', doc).split() for doc in processed_documents]
+
+    if apply_stoplist:
+        stoplist = load_stoplist()
+        processed_documents = [apply_stoplist_to_doc(stoplist, doc) for doc in processed_documents]
 
     if output:
         print "Saving processed documents to {}".format(output)

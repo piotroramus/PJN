@@ -21,7 +21,7 @@ def calc_idf(filename, encoding='utf-8'):
     print "Calculating TF and DF..."
     for document_nr, document in enumerate(documents):
         tf = Counter()
-        for word in document.split():
+        for word in document:
             bform = basic_form(word)
             tf[bform] += 1
         global_tf[document_nr] = tf
