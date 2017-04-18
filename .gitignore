@@ -19,5 +19,7 @@ test_results/
 
 /lab5/resources/
 
+/lab6/resources/
+
 !lab*/requirements.txt
 
