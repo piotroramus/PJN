@@ -24,8 +24,10 @@ def build_graph(document, k):
 
 
 def find_similar_notes(input_file, output_file, note_id, k, similarity_threshold):
+    """ Suitable for invoking only once (not in a loop!) - it builds all the things each time invoked"""
     documents = get_processed_documents(input_file, apply_stoplist=True)
 
+    print "Building graphs..."
     ref_graph = build_graph(documents[note_id], k)
     similar_notes = list()
     for i, document in enumerate(documents):
