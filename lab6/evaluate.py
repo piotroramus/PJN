@@ -1,4 +1,6 @@
 import argparse
+import io
+import re
 
 from graph import build_graph
 from tfidf import calc_idf
@@ -32,8 +34,9 @@ def evaluate_tfidf_model(input_file, reference_note_id, similarity_threshold, si
     recall = true_positives / float(true_positives + false_negatives)
     f1 = 2 * ((precision * recall) / float(precision + recall))
 
-    with open(output, 'w') as f:
+    with open(output, 'a+') as f:
         f.write("TFIDF: \n")
+        f.write("TP;FN;FP;TN: {};{};{};{}\n".format(true_positives, false_negatives, false_positives, true_negatives))
         f.write("precision:\t{}\n".format(precision))
         f.write("recall:\t{}\n".format(recall))
         f.write("f1:\t{}\n\n".format(f1))
@@ -73,15 +76,26 @@ def evaluate_graph_model(input_file, reference_note_id, k, similarity_threshold,
     recall = true_positives / float(true_positives + false_negatives)
     f1 = 2 * ((precision * recall) / float(precision + recall))
 
-    with open(output, 'w') as f:
-        f.write("Graph of {} order: \n".format(k))
+    with open(output, 'a+') as f:
+        f.write("Graph of order {}: \n".format(k))
+        f.write("TP;FN;FP;TN: {};{};{};{}\n".format(true_positives, false_negatives, false_positives, true_negatives))
         f.write("precision:\t{}\n".format(precision))
         f.write("recall:\t{}\n".format(recall))
         f.write("f1:\t{}\n\n".format(f1))
 
 
-def load_similar_notes_ids(input_file):
-    raise NotImplementedError()
+def load_similar_notes_ids(input_file, encoding='utf-8'):
+    note_id_pattern = r'#\d{6}'
+    note_id_line = re.compile(note_id_pattern)
+    note_ids = list()
+
+    with io.open(input_file, 'r', encoding=encoding) as f:
+        for line in f:
+            if note_id_line.match(line):
+                note_id = int(line.strip()[1:]) - 1
+                note_ids.append(note_id)
+
+    return note_ids
 
 
 if __name__ == '__main__':
@@ -99,20 +113,17 @@ if __name__ == '__main__':
     parser.add_argument('--reference_notes',
                         default='results/selected_reference_notes.txt',
                         help='path to file with ids of rerefence notes similar to the specified id')
-    parser.add_argument('-t', '--similarity_threshold',
-                        type=float,
-                        default=0.65,
-                        help='threshold in [0..1] for determining notes similarity')
 
     args = parser.parse_args()
-    similarity_threshold = args.similarity_threshold
     input_file = args.input_file
     output_file = args.output_file
     reference_note_id = args.note_id - 1  # subtract one because we index from 0
     reference_notes_file = args.reference_notes
 
     similar_notes_ids = load_similar_notes_ids(reference_notes_file)
-    evaluate_tfidf_model(input_file, reference_note_id, similarity_threshold, similar_notes_ids, output_file)
+
+    tfidf_similarity_threshold = 0.5
+    evaluate_tfidf_model(input_file, reference_note_id, tfidf_similarity_threshold, similar_notes_ids, output_file)
 
     # determined experimentally
     testing_params = [
@@ -131,4 +142,5 @@ if __name__ == '__main__':
     ]
 
     for params in testing_params:
-        evaluate_graph_model(input_file, reference_note_id, params['k'], params['similarity_threshold'], similar_notes_ids, output_file)
+        evaluate_graph_model(input_file, reference_note_id, params['k'], params['similarity_threshold'],
+                             similar_notes_ids, output_file)

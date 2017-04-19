@@ -66,7 +66,7 @@ if __name__ == '__main__':
                         help='graph order')
     parser.add_argument('-t', '--similarity_threshold',
                         type=float,
-                        default=0.5,
+                        default=0.65,
                         help='threshold in [0..1] for determining notes similarity')
 
     args = parser.parse_args()
