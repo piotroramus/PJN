@@ -21,6 +21,8 @@ test_results/
 
 /lab6/resources/
 
+/lab7/resources/
+
 !lab6/results/
 !lab*/requirements.txt
 
