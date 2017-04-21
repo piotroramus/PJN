@@ -10,3 +10,5 @@ Each class (lab) contains its own _requirements.txt_ file:
 3. Zipf and Mandelbrot laws in NLP.
 4. Naive Bayes classifier for guessing word correction
 5. Word Error Rate (missing calculating probability of sentence based on language and acoustic models)
+6. Finding similar notes using TF-IDF and graph models
+7. Finding similar notes using LSA model
