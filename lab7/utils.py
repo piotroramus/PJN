@@ -74,9 +74,6 @@ def preprocess_documents(filename, encoding='utf-8', output='resources/preproces
     stoplist = load_stoplist()
     processed_documents = [apply_stoplist_to_doc(stoplist, doc) for doc in processed_documents]
 
-    print "Removing empty documents..."
-    processed_documents = [doc for doc in processed_documents if doc]
-
     print "File preprocessing done. Saving results to {}...".format(output)
     with io.open(output, 'w', encoding=encoding) as f:
         for document in processed_documents:
