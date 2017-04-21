@@ -2,6 +2,7 @@ import io
 import re
 import string
 
+from math import fsum, sqrt
 from plp import PLP
 from stoplist import load_stoplist, apply_stoplist_to_doc
 
@@ -13,6 +14,25 @@ def basic_form(word):
     if not ids:
         return word
     return plp.bform(ids[0])
+
+
+def _norm(v):
+    s = fsum([v * v for v in v.values()])
+    return sqrt(s)
+
+
+def cosine_metric(v1, v2):
+    # convert tuple to dict
+    v1 = {k: v for k, v in v1}
+    v2 = {k: v for k, v in v2}
+
+    keys = set(v1.keys()) & set(v2.keys())
+    norm = _norm(v1) * _norm(v2)
+    try:
+        s = fsum([float(v1[key] * v2[key]) / norm for key in keys])
+    except ZeroDivisionError:
+        s = 0
+    return 1 - s
 
 
 def document_in_basic_form(document):
@@ -62,4 +82,18 @@ def preprocess_documents(filename, encoding='utf-8', output='resources/preproces
         for document in processed_documents:
             for word in document:
                 f.write(u"{} ".format(word))
+            f.write(u'\n')
+
+
+def save_similar_notes(output_file, notes_file, note_ids):
+    documents = documents_to_list(notes_file)
+
+    print "Saving similar notes to {}...".format(output_file)
+    with io.open(output_file, 'w', encoding='utf-8') as f:
+        f.write(u'#{:06} - REFERENCE NOTE'.format(note_ids[0] + 1))
+        f.write(documents[note_ids[0]])
+        f.write(u'\n')
+        for note_id in note_ids[1:]:
+            f.write(u'#{:06}'.format(note_id + 1))
+            f.write(documents[note_id])
             f.write(u'\n')
