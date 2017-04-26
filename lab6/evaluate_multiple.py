@@ -117,7 +117,7 @@ if __name__ == '__main__':
                         help='file to save evaluation results')
     parser.add_argument('--reference_notes_dir',
                         default='results/similar_ref/',
-                        help='path to file with ids of rerefence notes similar to the specified id')
+                        help='path to dir with reference similar notes ids')
 
     args = parser.parse_args()
     input_file = args.input_file
