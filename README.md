@@ -12,3 +12,4 @@ Each class (lab) contains its own _requirements.txt_ file:
 5. Word Error Rate (missing calculating probability of sentence based on language and acoustic models)
 6. Finding similar notes using TF-IDF and graph models
 7. Finding similar notes using LSA model
+8. Named Entity Recognition with usage of Liner2
