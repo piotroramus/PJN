@@ -9,7 +9,7 @@ import urllib2
 url = "http://ws.clarin-pl.eu/nlprest2/base"
 
 input_file = 'resources/potop.txt'
-out_path = 'out/'
+out_path = 'resources/'
 
 
 def upload(filename):
