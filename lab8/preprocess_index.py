@@ -21,6 +21,7 @@ def preprocess_index(tuples_file, output_file):
     header = ['start', 'end', 'channel', 'name']
     with open(output_file, 'wb') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
+        writer.writeheader()
         for row in sorted_by_name:
             writer.writerow(row)
 
@@ -35,8 +36,7 @@ if __name__ == '__main__':
                         help='path to output file containing sorted entries')
 
     args = parser.parse_args()
-    # input_file = args.input_file
-    input_file = 'potop_tuples_small.txt'
+    input_file = args.input_file
     output_file = args.output_file
 
     preprocess_index(input_file, output_file)
