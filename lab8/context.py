@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import csv
-from collections import defaultdict
+
+from preprocess_index import load_index_file
 
 
-def print_context(index, entity):
+def print_context(index, entity, corpus_file):
     if entity not in index:
         print "Given entity has not been found"
-
-
-def load_index_file(index_file):
-    index = defaultdict(list)
-    with open(index_file, 'rb') as csvfile:
-        reader = csv.DictReader(csvfile, delimiter=',')
-        for row in reader:
-            index[row['name']].append((row['start'], row['end'], row['channel']))
-
-    return index
+    else:
+        with open(corpus_file, 'rb') as corpus:
+            content = corpus.read().decode('utf-8')
+            for start, end, channel in index[entity]:
+                print "=========================="
+                print "Category:\t{}".format(channel)
+                print "Coordinates:\t({},{})".format(start, end)
+                print "Context: \n"
+                print content[start:end + 1]
 
 
 if __name__ == '__main__':
@@ -26,7 +25,7 @@ if __name__ == '__main__':
                         default='resources/potop/potop_index.txt',
                         help='path to file containing indexed entities')
     parser.add_argument('--corpus_file',
-                        default='resources/potop/potop.txt',
+                        default='resources/potop/potop_preprocessed.txt',
                         help='path to file with corpus')
     parser.add_argument('entity',
                         help='entity for which the context will be displayed')
@@ -37,4 +36,5 @@ if __name__ == '__main__':
     entity = args.entity
 
     index = load_index_file(index_file)
-    print index[entity]
+
+    print_context(index, entity, corpus_file)
