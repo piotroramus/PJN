@@ -29,10 +29,10 @@ def preprocess_index(tuples_file, output_file):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Sort index file in tuples format by the name alphabetically")
     parser.add_argument('-i', '--input_file',
-                        default='resources/potop_tuples.txt',
+                        default='resources/potop/potop_tuples.txt',
                         help='path to file with index in tuples format')
     parser.add_argument('-o', '--output_file',
-                        default='resources/potop_index.txt',
+                        default='resources/potop/potop_index.txt',
                         help='path to output file containing sorted entries')
 
     args = parser.parse_args()

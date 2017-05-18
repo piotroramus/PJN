@@ -8,8 +8,8 @@ import urllib2
 
 url = "http://ws.clarin-pl.eu/nlprest2/base"
 
-input_file = 'resources/potop.txt'
-out_path = 'resources/'
+input_file = 'resources/potop/potop.txt'
+out_path = 'resources/potop/'
 
 
 def upload(filename):
