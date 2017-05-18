@@ -38,8 +38,9 @@ def load_index_file(index_file):
 
 
 def index_ambiguity(index):
-    # checks whether each entity is assigned with an unique channel
-    # (usually it is not the case, but when it is the processing can be made simpler)
+    """ Checks whether each entity is assigned with an unique channel.
+        Usually it is not, but when it is the processing can be made simpler.
+    """
     for entity in index:
         entity_channel = None
         for _, _, channel in index[entity]:
