@@ -17,6 +17,10 @@ def print_context(index, entity, corpus_file, mapping, context_size):
                 print "Category:\t{}".format(channel)
                 print "Position:\t({},{})".format(start, end)
 
+                # hack: for "complex" entity like "Jasna Gora" move end to the first whitespace
+                if " " in entity:
+                    end -= (len(entity) - entity.index(" "))
+
                 start, end = get_original_positions(mapping, start, end)
 
                 # find context_size lines preceding and following the entity to show the entity's context
