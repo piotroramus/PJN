@@ -39,7 +39,9 @@ def load_mapping(map_file):
 
 def get_original_positions(mapping, start, end):
     for stripped_start, stripped_end in mapping:
-        if start >= stripped_start and end <= stripped_end - 1:
+        # we do not look for end <= stripped_end - 1 condition
+        # because entites can be formed from more than one word
+        if start >= stripped_start:
             return mapping[(stripped_start, stripped_end)]
     raise IndexError('Cannot find mapping for ({},{})'.format(start, end))
 
