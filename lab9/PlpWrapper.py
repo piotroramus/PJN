@@ -52,23 +52,24 @@ class PartOfSpeech(Enum):
     NIEODMIENNY = 10
     SKROT = 11
 
-    str_map = {
-        0: "???",
-        1: "RZECZOWNIK",
-        2: "CZASOWNIK",
-        3: "PRZYMIOTNIK",
-        4: "LICZEBNIK",
-        5: "ZAIMEK",
-        6: "PRZYSLOWEK",
-        7: "WYKRZYNIK",
-        8: "PRZYIMEK",
-        9: "SPOJNIK",
-        10: "NIEODMIENNY",
-        11: "SKROT"
-    }
+    def str_map(self):
+        return {
+            0: "???",
+            1: "RZECZOWNIK",
+            2: "CZASOWNIK",
+            3: "PRZYMIOTNIK",
+            4: "LICZEBNIK",
+            5: "ZAIMEK",
+            6: "PRZYSLOWEK",
+            7: "WYKRZYNIK",
+            8: "PRZYIMEK",
+            9: "SPOJNIK",
+            10: "NIEODMIENNY",
+            11: "SKROT"
+        }
 
     def __str__(self):
-        return self.str_map[self.value]
+        return self.str_map()[self.value]
 
 
 class GrammarCase(Enum):
@@ -87,15 +88,16 @@ class GrammarCase(Enum):
     MIEJSCOWNIK_MN = 13
     WOLACZ_MN = 14
 
-    str_map = {
-        1: "MIANOWNIK",
-        2: "DOPELNIACZ",
-        3: "CELOWNIK",
-        4: "BIERNIK",
-        5: "NARZEDNIK",
-        6: "MIEJSCOWNIK",
-        7: "WOLACZ"
-    }
+    def str_map(self):
+        return {
+            1: "MIANOWNIK",
+            2: "DOPELNIACZ",
+            3: "CELOWNIK",
+            4: "BIERNIK",
+            5: "NARZEDNIK",
+            6: "MIEJSCOWNIK",
+            7: "WOLACZ"
+        }
 
     def __str__(self):
-        return self.str_map[(self.value - 1) % 7 + 1]
+        return self.str_map()[(self.value - 1) % 7 + 1]
