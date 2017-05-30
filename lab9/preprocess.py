@@ -6,7 +6,13 @@ import string
 
 from collections import defaultdict, Counter
 
-from PlpWrapper import PlpWrapper, GrammarCase
+from PlpWrapper import PlpWrapper, GrammarCase, PartOfSpeech
+
+import sys
+
+# nasty hack, but I did not have time to fix encodings the proper way
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 plp = PlpWrapper()
 
@@ -31,7 +37,8 @@ def split_to_sentences(input_file):
     return sentences
 
 
-def prepositions(sentences):
+def prepositions(sentences, output_file='results/prepositions.txt'):
+    print "Determining prepositions followed by noun..."
     result = defaultdict(set)
 
     for sentence in sentences:
@@ -40,7 +47,7 @@ def prepositions(sentences):
         word_index = 0
         words_len = len(words)
         while word_index < words_len:
-            word = words[word_index]
+            word = words[word_index].strip()
             prep = plp.get_preposition(word)
             if not prep:
                 word_index += 1
@@ -58,4 +65,31 @@ def prepositions(sentences):
                     result[word].add((next_word, noun))
             word_index += 1
 
+    print "Saving prepositions map to {}...".format(output_file)
+    with io.open(output_file, 'w', encoding='utf-8') as f:
+        for prep in result:
+            line = "{}".format(prep)
+            for noun, clp_id in result[prep]:
+                line += ";" + noun + ";" + str(clp_id)
+            f.write(line)
+            f.write(u'\n')
+
+    print "Done"
     return result
+
+
+def load_prepositions(input_file='results/prepositions.txt'):
+    print "Loading prepositions map from {}".format(input_file)
+
+    prep_map = defaultdict(set)
+    with io.open(input_file, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line == '\n':
+                continue
+            entries = line.strip().split(';')
+            preposition = entries[0]
+            for i in xrange(len(entries) / 2):
+                prep_map[preposition].add((entries[i * 2], entries[i * 2 + 1]))
+    return prep_map
+
+
