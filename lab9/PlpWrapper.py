@@ -37,6 +37,9 @@ class PlpWrapper(object):
     def pos(self, id):
         return PartOfSpeech(self.plp.CLPLIB.clp_pos(c_int(id)))
 
+    def grammar_case(self, word, word_id):
+        vec = self.plp.vec(word_id, word)
+        return list(set([GrammarCase((i - 1) % 7 + 1) for i in vec]))
 
 class PartOfSpeech(Enum):
     UNKNOWN = 0

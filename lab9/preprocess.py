@@ -4,12 +4,10 @@ import csv
 import io
 import re
 import string
-
+import sys
 from collections import defaultdict, Counter
 
-from PlpWrapper import PlpWrapper, GrammarCase, PartOfSpeech
-
-import sys
+from PlpWrapper import PlpWrapper
 
 # nasty hack, but I did not have time to fix encodings the proper way
 reload(sys)
@@ -92,3 +90,59 @@ def load_prepositions(input_file='results/prepositions.csv'):
                 prep_map[preposition].add((row[i * 2 + 1], int(row[i * 2 + 2])))
 
     return prep_map
+
+
+def stats(prepositions):
+    stats = defaultdict(Counter)
+    grammar_cases_words = dict()
+
+    for preposition, nouns in prepositions.items():
+        grammar_cases_words[preposition] = defaultdict(list)
+        for noun, clp_id in nouns:
+            grammar_cases = plp.grammar_case(noun, clp_id)
+
+            # if the noun has too many grammar cases skip it
+            if len(grammar_cases) > 2:
+                continue
+            elif len(grammar_cases) > 1:
+                for ps in grammar_cases:
+                    stats[preposition][ps] += 1
+            elif len(grammar_cases) == 1:
+                stats[preposition][grammar_cases[0]] += 10
+            for ps in grammar_cases:
+                grammar_cases_words[preposition][ps].append(noun)
+    return stats, grammar_cases_words
+
+
+if __name__ == '__main__':
+
+    sentences = split_to_sentences('resources/pap.txt')
+
+    prepositions_with_nouns = load_prepositions()
+
+    stats, grammar_cases_words = stats(prepositions_with_nouns)
+
+    selected = False
+    if selected:
+        selected_prepositions = ['bez', 'za', 'wbrew', 'przy', 'spoza']
+    else:
+        selected_prepositions = prepositions_with_nouns.keys()
+
+    for preposition, cases in stats.items():
+
+        if preposition not in selected_prepositions:
+            continue
+
+        print '=========================='
+        print '{}'.format(preposition)
+
+        values_sum = float(sum([cases[x] for x in cases]))
+        significant_cases = filter(lambda x: float(x[1]) / values_sum * 100.0 > 10, cases.items())
+
+        case, value = significant_cases[0]
+
+        for case, value in significant_cases:
+            samples = ', '.join(grammar_cases_words[preposition][case][:10])
+            print "{} ({:.2f}%) [{}]".format(case, float(value) / float(values_sum) * 100.0, samples)
+
+        print "=========================="
