@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import csv
 import io
 import re
 import string
@@ -37,7 +38,7 @@ def split_to_sentences(input_file):
     return sentences
 
 
-def prepositions(sentences, output_file='results/prepositions.txt'):
+def prepositions(sentences, output_file='results/prepositions.csv'):
     print "Determining prepositions followed by noun..."
     result = defaultdict(set)
 
@@ -65,31 +66,29 @@ def prepositions(sentences, output_file='results/prepositions.txt'):
                     result[word].add((next_word, noun))
             word_index += 1
 
-    print "Saving prepositions map to {}...".format(output_file)
-    with io.open(output_file, 'w', encoding='utf-8') as f:
+    # print "Saving prepositions map to {}...".format(output_file)
+    with io.open(output_file, 'wb') as f:
+        writer = csv.writer(f, delimiter=";")
         for prep in result:
-            line = "{}".format(prep)
+            row = [unicode(prep)]
             for noun, clp_id in result[prep]:
-                line += ";" + noun + ";" + str(clp_id)
-            f.write(line)
-            f.write(u'\n')
+                row.append(unicode(noun))
+                row.append(unicode(clp_id))
+            writer.writerow(row)
 
     print "Done"
     return result
 
 
-def load_prepositions(input_file='results/prepositions.txt'):
+def load_prepositions(input_file='results/prepositions.csv'):
     print "Loading prepositions map from {}".format(input_file)
 
     prep_map = defaultdict(set)
-    with io.open(input_file, 'r', encoding='utf-8') as f:
-        for line in f:
-            if line == '\n':
-                continue
-            entries = line.strip().split(';')
-            preposition = entries[0]
-            for i in xrange(len(entries) / 2):
-                prep_map[preposition].add((entries[i * 2], entries[i * 2 + 1]))
+    with io.open(input_file, 'rb') as f:
+        reader = csv.reader(f, delimiter=";")
+        for row in reader:
+            preposition = row[0]
+            for i in xrange((len(row) - 1) / 2):
+                prep_map[preposition].add((row[i * 2 + 1], int(row[i * 2 + 2])))
+
     return prep_map
-
-
