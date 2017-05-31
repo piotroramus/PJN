@@ -99,18 +99,14 @@ def stats(prepositions):
     for preposition, nouns in prepositions.items():
         grammar_cases_words[preposition] = defaultdict(list)
         for noun, clp_id in nouns:
-            grammar_cases = plp.grammar_case(noun, clp_id)
+            noun_grammar_cases = plp.grammar_case(noun, clp_id)
 
-            # if the noun has too many grammar cases skip it
-            if len(grammar_cases) > 2:
-                continue
-            elif len(grammar_cases) > 1:
-                for ps in grammar_cases:
-                    stats[preposition][ps] += 1
-            elif len(grammar_cases) == 1:
-                stats[preposition][grammar_cases[0]] += 10
-            for ps in grammar_cases:
-                grammar_cases_words[preposition][ps].append(noun)
+            # skip noun having too many grammar cases
+            if len(noun_grammar_cases) < 2:
+                for gc in noun_grammar_cases:
+                    stats[preposition][gc] += 1
+                    grammar_cases_words[preposition][gc].append(noun)
+
     return stats, grammar_cases_words
 
 
@@ -136,8 +132,8 @@ if __name__ == '__main__':
         print '=========================='
         print '{}'.format(preposition)
 
-        values_sum = float(sum([cases[x] for x in cases]))
-        significant_cases = filter(lambda x: float(x[1]) / values_sum * 100.0 > 10, cases.items())
+        values_sum = float(sum([cases[c] for c in cases]))
+        significant_cases = filter(lambda c: float(c[1]) / values_sum * 100.0 > 10, cases.items())
 
         case, value = significant_cases[0]
 
