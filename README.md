@@ -13,3 +13,4 @@ Each class (lab) contains its own _requirements.txt_ file:
 6. Finding similar notes using TF-IDF and graph models
 7. Finding similar notes using LSA model
 8. Named Entity Recognition with usage of Liner2
+9. Guessing case government of prepositions in polish press notes

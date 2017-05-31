@@ -6,6 +6,7 @@ import re
 import string
 import sys
 from collections import defaultdict, Counter
+from operator import itemgetter
 
 from PlpWrapper import PlpWrapper
 
@@ -64,7 +65,7 @@ def prepositions(sentences, output_file='results/prepositions.csv'):
                     result[word].add((next_word, noun))
             word_index += 1
 
-    # print "Saving prepositions map to {}...".format(output_file)
+    print "Saving prepositions map to {}...".format(output_file)
     with io.open(output_file, 'wb') as f:
         writer = csv.writer(f, delimiter=";")
         for prep in result:
@@ -124,7 +125,7 @@ if __name__ == '__main__':
     else:
         selected_prepositions = prepositions_with_nouns.keys()
 
-    for preposition, cases in stats.items():
+    for preposition, cases in sorted(stats.items(), key=itemgetter(0)):
 
         if preposition not in selected_prepositions:
             continue
