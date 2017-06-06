@@ -13,8 +13,9 @@ test_results/
 /lab2/*.txt
 /lab3/*.txt
 
+/lab10/model/
+
 !lab6/results/
 !lab7/results/
-!lab10/results/
 !lab*/requirements.txt
 
